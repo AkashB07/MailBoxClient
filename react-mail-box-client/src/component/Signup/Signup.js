@@ -8,7 +8,6 @@ const url = 'http://localhost';
 const Signup = (props) => {
     const navigate = useNavigate();
 
-
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
     const confirmPasswordInputRef = useRef();

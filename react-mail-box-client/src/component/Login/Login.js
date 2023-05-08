@@ -34,7 +34,6 @@ const Login = (props) => {
                 localStorage.setItem('token', respone.data.token);
                 dispatch(authActions.login({ token: respone.data.token, email: enteredEmail }));
                 alert(respone.data.message);
-
             }
             else {
                 throw new Error('Failed to Login');
