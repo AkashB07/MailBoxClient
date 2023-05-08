@@ -1,29 +1,25 @@
 import React, { useRef, Fragment } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+
+import { authActions } from "../../store/auth-slice";
 
 const url = 'http://localhost';
 
-const Signup = (props) => {
+const Login = (props) => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-
 
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
-    const confirmPasswordInputRef = useRef();
 
-    const signupHandler = async (event) => {
+    const loginHandler = async (event) => {
         try {
             event.preventDefault();
             const enteredEmail = emailInputRef.current.value;
             const enteredPassword = passwordInputRef.current.value;
-            const enteredConfirmPassword = confirmPasswordInputRef.current.value;
-
-            if (enteredPassword !== enteredConfirmPassword) {
-                alert("Password should be same");
-                return;
-            }
 
             const userDetails = {
                 email: enteredEmail,
@@ -31,18 +27,21 @@ const Signup = (props) => {
             }
             emailInputRef.current.value = '';
             passwordInputRef.current.value = '';
-            confirmPasswordInputRef.current.value = '';
-            
-            const respone = await axios.post(`${url}:4000/user/signup`, userDetails)
-            if (respone.status === 201) {
+
+            const respone = await axios.post(`${url}:4000/user/login`, userDetails);
+
+            if (respone.status === 200) {
+                localStorage.setItem('token', respone.data.token);
+                dispatch(authActions.login({ token: respone.data.token, email: enteredEmail }));
                 alert(respone.data.message);
-                navigate('/');
+
             }
             else {
-                throw new Error('Failed to Signup');
+                throw new Error('Failed to Login');
             }
         }
         catch (error) {
+            alert(error.response.data.message);
             console.log(error);
         }
     };
@@ -51,10 +50,10 @@ const Signup = (props) => {
     return (
         <Fragment><br />
             <div className="row justify-content-center">
-                <h1 className="text-center">SignUp</h1><br /><br /><br /><br />
+                <h1 className="text-center">Login</h1><br /><br /><br /><br />
 
                 <div className="col-md-4">
-                    <form id="loginform" onSubmit={signupHandler}>
+                    <form id="loginform" onSubmit={loginHandler}>
 
                         <div className="form-group">
                             <label>Email address</label>
@@ -76,21 +75,10 @@ const Signup = (props) => {
                             />
                         </div><br />
 
-
-                        <div className="form-group">
-                            <label>Confirm Password</label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                placeholder="Confirm Password"
-                                required ref={confirmPasswordInputRef}
-                            />
-                        </div><br />
-
-
                         <div className="d-grid gap-2">
-                            <Button type="submit" variant="primary" size="lg">SignUp</Button>
-                            <p className="text-center" > <Link to="/">Already Registered? Login</Link></p><br />
+                            <p className="text-center"> <Link to="/password">Forgot Password?</Link></p>
+                            <Button type="submit" variant="primary" size="lg">LogIn</Button>
+                            <p className="text-center" > <Link to="/signup">New User? Signup</Link></p><br />
                         </div>
 
                     </form><br /><br /><br />
@@ -100,4 +88,4 @@ const Signup = (props) => {
     );
 };
 
-export default Signup;
+export default Login;
