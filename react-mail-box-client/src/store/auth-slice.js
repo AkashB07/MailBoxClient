@@ -8,7 +8,11 @@ const authSlice = createSlice({
             state.isAuthenticated = true;
             state.token = action.payload.token;
             state.email = action.payload.email;
-        }
+        },
+        logout(state) {
+            state.isAuthenticated = false
+            state.token = null
+        },
     }
 });
   
