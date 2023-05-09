@@ -6,16 +6,15 @@ import { authActions } from "./store/auth-slice";
 import SignupPage from "./pages/Signup";
 import LoginPage from "./pages/Login";
 import PasswordPage from "./pages/Password";
-import ComposePage from "./pages/Compose";
 import Header from "./component/Layout/Header";
-
+import ComposePage from "./pages/Compose";
+import InboxPage from "./pages/Inbox";
 
 
 const App = () =>  {
 
   const { isAuthenticated, token, email } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  console.log(email);
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
     const savedEmail = localStorage.getItem("email");
@@ -41,7 +40,8 @@ const App = () =>  {
       <Route path="/" element={<LoginPage/>}/>
       <Route path="/password" element={<PasswordPage/>}/>
       <Route path="/compose" element={<ComposePage/>}/>
-      <Route path="home/*" element={isAuthenticated ? <Header /> : <Navigate to="/" />} />
+      <Route path="/inbox" element={<InboxPage/>}/>
+      <Route path="/home" element={isAuthenticated ? <Header /> : <Navigate to="/" />} />
       
     </Routes>
   );

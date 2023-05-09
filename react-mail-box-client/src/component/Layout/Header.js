@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
@@ -26,13 +26,15 @@ const Header = () => {
           <Navbar.Brand href="/home"><h1>Mail Box</h1></Navbar.Brand>
           <Fragment>
             <Nav className="me-auto">
-              <Link to="/compose">Compose</Link>
+              <Nav.Link href="/compose">Compose</Nav.Link>
+            </Nav>
+            <Nav className="me-auto">
+              <Nav.Link href="/inbox">Inbox</Nav.Link>
             </Nav>
             <Button variant="danger" onClick={logoutHandler} >Logout</Button>
           </Fragment>
         </Container>
       </Navbar>
-
     </Fragment>
   );
 };

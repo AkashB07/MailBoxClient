@@ -1,5 +1,5 @@
-import { Fragment, useRef, useState } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
+import { useRef, useState } from "react";
+import { Button,  Form } from "react-bootstrap";
 import { convertToRaw, EditorState } from "draft-js";
 import { useDispatch, useSelector } from "react-redux";
 import { Editor } from "react-draft-wysiwyg";
@@ -7,14 +7,16 @@ import draftToHtml from "draftjs-to-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import axios from "axios";
 
+import { mailActions } from "../../store/mail-slice";
+
 const url = 'http://localhost';
 
 const Compose = (props) => {
 
     const dispatch = useDispatch();
-    const email = useSelector(state => state.auth.email);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const token = useSelector(state => state.auth.token);
+    // const { sentMail } = useSelector((state) => state.mail);
 
     const emailRef = useRef();
     const subjectRef = useRef();
@@ -34,10 +36,15 @@ const Compose = (props) => {
                 isRead: false,
             };
 
+            const transformData = (data) => {
+                const newData = [data];
+                dispatch(mailActions.updateSentMail({ mail: newData }));
+            };
+
             const respone = await axios.post(`${url}:4000/mail/send`, mailDetails, { headers: { "Authorization": token } });
 
             if (respone.status === 200) {
-
+                transformData(respone.data.mails);
                 alert(respone.data.message);
                 emailRef.current.value = '';
                 subjectRef.current.value = '';
