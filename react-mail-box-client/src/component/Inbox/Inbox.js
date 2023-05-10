@@ -48,10 +48,10 @@ const Inbox = () => {
 
     const viewMailHandler = async (mail) => {
         try {
-            dispatch(mailActions.viewMailHandle({ id: mail._id }));
+            dispatch(mailActions.viewMailHandle({ id: mail._id, body: mail.body }));
             setNonRead(nonRead);
             await axios.patch(`${url}:4000/mail/updatemail`, { id: mail._id }, { headers: { "Authorization": token } });
-            getMailsHandler()
+            getMailsHandler();
         }
         catch (error) {
             console.log(error);
@@ -87,7 +87,7 @@ const Inbox = () => {
                                             }}
                                         ></div>
                                     </td>
-                                    <td>{mail.from}</td>
+                                    <td>{mail.from} {mail.body}</td>
                                     <td>{mail.subject}</td>
                                     <td>{new Date(mail.createdAt).toDateString()}</td>
                                     <td>
@@ -95,7 +95,8 @@ const Inbox = () => {
                                             View
                                         </Button>
                                     </td>
-                                    <ViewMail mail={mail} type={"recevied"} />
+                                    <td><ViewMail/></td>
+                                    
                                 </tr>
                             );
                         })}
