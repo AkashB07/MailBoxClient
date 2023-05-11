@@ -23,13 +23,28 @@ const Inbox = () => {
                 const newData = [];
                 for (let key of mail) {
                     newData.push(key);
-                    if (key.isRead === 'false') {
-                        setNonRead(++nonRead);
-                    }
                 }
                 dispatch(mailActions.updateReceivedMail({ mail: newData }));
             };
 
+            const respone = await axios.get(`${url}:4000/mail/inbox`, { headers: { "Authorization": token } });
+            transformData(respone.data.mails);
+        }
+        catch (error) {
+            console.log(error);
+        }
+
+    }, [])
+
+    const getCount= useCallback(async () => {
+        try {
+            const transformData = (mail) => {
+                for (let key of mail) {
+                    if (key.isRead === 'false') {
+                        setNonRead(++nonRead);
+                    }
+                }
+            };
             const respone = await axios.get(`${url}:4000/mail/inbox`, { headers: { "Authorization": token } });
             setNonRead(0);
             transformData(respone.data.mails);
@@ -41,7 +56,15 @@ const Inbox = () => {
     }, [])
 
     useEffect(() => {
-        getMailsHandler();
+        getCount();
+        const intervalId = setInterval(() => {
+            getMailsHandler();
+        }, 1000);
+        return () => {
+            setNonRead(0);
+            clearInterval(intervalId);
+          };
+       
     }, [getMailsHandler]);
 
     const viewMailHandler = async (mail) => {
