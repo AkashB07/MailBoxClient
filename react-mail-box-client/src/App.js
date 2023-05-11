@@ -9,7 +9,7 @@ import PasswordPage from "./pages/Password";
 import Header from "./component/Layout/Header";
 import ComposePage from "./pages/Compose";
 import InboxPage from "./pages/Inbox";
-
+import SentPage from "./pages/Sent";
 
 const App = () =>  {
 
@@ -41,6 +41,7 @@ const App = () =>  {
       <Route path="/password" element={<PasswordPage/>}/>
       <Route path="/compose" element={<ComposePage/>}/>
       <Route path="/inbox" element={<InboxPage/>}/>
+      <Route path="/sent" element={<SentPage/>}/>
       <Route path="/home" element={isAuthenticated ? <Header /> : <Navigate to="/" />} />
       
     </Routes>

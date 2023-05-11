@@ -9,12 +9,12 @@ import ViewMail from "../ViewMail/ViewMail";
 
 const url = 'http://localhost';
 
-const Inbox = () => {
+const Sent = () => {
     // const token = useSelector(state => state.auth.token);
     const token = localStorage.getItem('token');
 
     const dispatch = useDispatch();
-    const { receivedMail } = useSelector((state) => state.mail);
+    const { sentMail } = useSelector((state) => state.mail);
     let [nonRead, setNonRead] = useState(0);
 
     const getMailsHandler = useCallback(async () => {
@@ -27,10 +27,10 @@ const Inbox = () => {
                         setNonRead(++nonRead);
                     }
                 }
-                dispatch(mailActions.updateReceivedMail({ mail: newData }));
+                dispatch(mailActions.updateSentMail({ mail: newData }));
             };
 
-            const respone = await axios.get(`${url}:4000/mail/inbox`, { headers: { "Authorization": token } });
+            const respone = await axios.get(`${url}:4000/mail/sent`, { headers: { "Authorization": token } });
             setNonRead(0);
             transformData(respone.data.mails);
         }
@@ -46,10 +46,8 @@ const Inbox = () => {
 
     const viewMailHandler = async (mail) => {
         try {
-            dispatch(mailActions.viewInboxHandle({ id: mail._id, body: mail.body }));
+            dispatch(mailActions.viewSentHandler({ id: mail._id, body: mail.body }));
             setNonRead(nonRead);
-            await axios.patch(`${url}:4000/mail/updatemail`, { id: mail._id }, { headers: { "Authorization": token } });
-            // getMailsHandler();
         }
         catch (error) {
             console.log(error);
@@ -58,34 +56,21 @@ const Inbox = () => {
 
     return (
         <div className="row justify-content-center">
-            <h1 className="text-center">Inbox</h1><br /><br /><br />
+            <h1 className="text-center">Sent Mails</h1><br /><br /><br />
             <div className="col-md-11" >
                 <Table striped >
                     <thead>
                         <tr>
-                            <th><h5 className="fw-bold">unread - {nonRead}</h5></th>
-                            <th><h5 className="fw-bold">Sender</h5></th>
+                            <th><h5 className="fw-bold">Send To</h5></th>
                             <th><h5 className="fw-bold">Subject</h5></th>
                             <th><h5 className="fw-bold">Date</h5></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {receivedMail.map((mail) => {
+                        {sentMail.map((mail) => {
                             return (
-                                <tr key={mail._id}>
-                                    <td >
-                                        <div
-                                            style={{
-                                                backgroundColor:  mail.isRead==='false'? "blue": "white",            
-                                                height: "10px",
-                                                width: "10px",
-                                                marginTop: "0px",
-                                                marginRight: "0%",
-                                                border: "1px solid black",
-                                            }}
-                                        ></div>
-                                    </td>
-                                    <td>{mail.from}</td>
+                                <tr key={mail._id}>  
+                                    <td>{mail.to}</td>
                                     <td>{mail.subject}</td>
                                     <td>{new Date(mail.createdAt).toDateString()}</td>
                                     <td>
@@ -93,8 +78,7 @@ const Inbox = () => {
                                             View
                                         </Button>
                                     </td>
-                                    <td><ViewMail type={"inbox"}/></td>
-                                    
+                                    <td><ViewMail type={"sent"} /></td>                  
                                 </tr>
                             );
                         })}
@@ -106,4 +90,4 @@ const Inbox = () => {
     );
 };
 
-export default Inbox;
+export default Sent;

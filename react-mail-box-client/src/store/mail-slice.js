@@ -10,12 +10,17 @@ const mailSlice = createSlice({
     updateSentMail(state, action) {
       state.sentMail = action.payload.mail;
     },
-    viewMailHandle(state, action) {
+    viewInboxHandle(state, action) {
       const newid = action.payload.id;
       const index = state.receivedMail.findIndex((mail) => mail._id === newid);
       state.receivedMail[index].isRead = true;
       state.viewMail = !state.viewMail;
       state.mailId = newid;
+      state.mailBody = action.payload.body;
+    },
+    viewSentHandler(state, action) {
+      state.viewMail = !state.viewMail;   
+      state.mailId = action.payload.id;
       state.mailBody = action.payload.body;
     },
     mailHandler(state) {

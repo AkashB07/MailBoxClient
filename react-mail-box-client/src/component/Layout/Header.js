@@ -27,9 +27,8 @@ const Header = () => {
           <Fragment>
             <Nav className="me-auto">
               <Nav.Link href="/compose">Compose</Nav.Link>
-            </Nav>
-            <Nav className="me-auto">
               <Nav.Link href="/inbox">Inbox</Nav.Link>
+              <Nav.Link href="/sent">Sent</Nav.Link>
             </Nav>
             <Button variant="danger" onClick={logoutHandler} >Logout</Button>
           </Fragment>
