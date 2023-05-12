@@ -3,6 +3,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { authActions } from "./store/auth-slice";
+import HomePage from "./pages/Home";
 import SignupPage from "./pages/Signup";
 import LoginPage from "./pages/Login";
 import PasswordPage from "./pages/Password";
@@ -42,7 +43,7 @@ const App = () =>  {
       <Route path="/compose" element={<ComposePage/>}/>
       <Route path="/inbox" element={<InboxPage/>}/>
       <Route path="/sent" element={<SentPage/>}/>
-      <Route path="/home" element={isAuthenticated ? <Header /> : <Navigate to="/" />} />
+      <Route path="/home" element={isAuthenticated ? <HomePage/> : <Navigate to="/" />} />
       
     </Routes>
   );

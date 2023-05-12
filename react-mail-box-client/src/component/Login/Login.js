@@ -31,7 +31,7 @@ const Login = (props) => {
             const respone = await axios.post(`${url}:4000/user/login`, userDetails);
 
             if (respone.status === 200) {
-                localStorage.setItem('token', respone.data.token);
+                // localStorage.setItem('token', respone.data.token);
                 dispatch(authActions.login({ token: respone.data.token, email: enteredEmail }));
                 alert(respone.data.message);
                 navigate('/home');
@@ -41,6 +41,7 @@ const Login = (props) => {
             }
         }
         catch (error) {
+            console.log(error);
             alert(error.response.data.message);
             console.log(error);
         }

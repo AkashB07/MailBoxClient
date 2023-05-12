@@ -13,9 +13,26 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const home = () => {
+    navigate("/home");
+  }
+
+  const compose = () => {
+    navigate('/compose')
+  }
+
+  const inbox = () => {
+    navigate('/inbox')
+  }
+
+  const sent = () => {
+    navigate('/sent')
+  }
+
+
   const logoutHandler = () => {
     dispatch(authActions.logout());
-    localStorage.removeItem("token");
+    // localStorage.removeItem("token");
     navigate('/');
   }
 
@@ -23,12 +40,12 @@ const Header = () => {
     <Fragment>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="/home"><h1>Mail Box</h1></Navbar.Brand>
+          <Button variant="dark" onClick={home} size="lg"><h2>Mail Box</h2></Button>
           <Fragment>
             <Nav className="me-auto">
-              <Nav.Link href="/compose">Compose</Nav.Link>
-              <Nav.Link href="/inbox">Inbox</Nav.Link>
-              <Nav.Link href="/sent">Sent</Nav.Link>
+              <Button variant="dark" onClick={compose}>Compose</Button>
+              <Button variant="dark" onClick={inbox}>Inbox</Button>
+              <Button variant="dark" onClick={sent}>Sent</Button>
             </Nav>
             <Button variant="danger" onClick={logoutHandler} >Logout</Button>
           </Fragment>

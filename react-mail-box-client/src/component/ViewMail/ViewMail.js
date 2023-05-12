@@ -11,7 +11,8 @@ const ViewMail = (props) => {
   const viewMail = useSelector((state) => state.mail.viewMail);
   const mailId = useSelector(state => state.mail.mailId);
   const mailBody = useSelector(state => state.mail.mailBody);
-  const token = localStorage.getItem('token');
+  // const token = localStorage.getItem('token');
+  const token = useSelector(state => state.auth.token);
   const dispatch = useDispatch();
   const viewMailHandler = () => {
     dispatch(mailActions.mailHandler());

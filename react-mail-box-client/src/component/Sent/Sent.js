@@ -10,8 +10,8 @@ import ViewMail from "../ViewMail/ViewMail";
 const url = 'http://localhost';
 
 const Sent = () => {
-    // const token = useSelector(state => state.auth.token);
-    const token = localStorage.getItem('token');
+    const token = useSelector(state => state.auth.token);
+    // const token = localStorage.getItem('token');
 
     const dispatch = useDispatch();
     const { sentMail } = useSelector((state) => state.mail);
@@ -61,7 +61,7 @@ const Sent = () => {
                 <Table striped >
                     <thead>
                         <tr>
-                            <th><h5 className="fw-bold">Send To</h5></th>
+                            <th><h5 className="fw-bold">Sent To</h5></th>
                             <th><h5 className="fw-bold">Subject</h5></th>
                             <th><h5 className="fw-bold">Date</h5></th>
                         </tr>

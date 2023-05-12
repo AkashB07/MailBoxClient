@@ -10,8 +10,8 @@ import ViewMail from "../ViewMail/ViewMail";
 const url = 'http://localhost';
 
 const Inbox = () => {
-    // const token = useSelector(state => state.auth.token);
-    const token = localStorage.getItem('token');
+    const token = useSelector(state => state.auth.token);
+    // const token = localStorage.getItem('token');
 
     const dispatch = useDispatch();
     const { receivedMail } = useSelector((state) => state.mail);
